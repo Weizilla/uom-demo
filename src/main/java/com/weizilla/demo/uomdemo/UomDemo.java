@@ -7,6 +7,8 @@ import javax.measure.quantity.Length;
 import javax.measure.quantity.Speed;
 import javax.measure.quantity.Time;
 
+import java.math.BigDecimal;
+
 import static systems.uom.common.USCustomary.HOUR;
 import static systems.uom.common.USCustomary.METER;
 import static systems.uom.common.USCustomary.MILE;
@@ -27,10 +29,16 @@ public class UomDemo {
         Quantity<Speed> speed = miles.divide(time).asType(Speed.class);
         System.out.println(speed);
 
-        Quantity<Length> parsed = Quantities.getQuantity("10 mi").asType(Length.class);
+        Quantity<Length> parsed = Quantities.getQuantity("10.0 mi").asType(Length.class);
         System.out.println(parsed);
 
         Quantity<Length> parsedM = parsed.to(METER);
         System.out.println(parsedM);
+
+        Quantity<Length> created = Quantities.getQuantity(BigDecimal.valueOf(10.0), MILE);
+
+        // Parsed Quantity are backed by BigDecimal as DecimalQuantity so in order for equals to work
+        // the reference Quantity has to be created with a BigDecimal as well
+        System.out.println("Same ? " + created.equals(parsed));
     }
 }
